@@ -14,7 +14,8 @@ ui = dashboardPage(
                                   min = min(all_packages$date),
                                   max = max(all_packages$date))
                )),
-               fluidRow(box(DT::DTOutput("raw_downloads")))
+               fluidRow(box(title = "Bioconductor downloads",
+                            DT::DTOutput("raw_downloads")))
         ),
         column(6,
                fluidRow(box(title = "Summary for the selected period",
