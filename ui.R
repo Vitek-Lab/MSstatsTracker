@@ -6,7 +6,7 @@ ui = dashboardPage(
                fluidRow(box(
                    title = "Controls",
                    selectInput("package", "Select package",
-                               choices = c("MSstats", "MSstatsTMT", "MSstatsConvert"),
+                               choices = pkgs,
                                selected = "MSstats"),
                    dateRangeInput("date", "Date range",
                                   start = min(all_packages$date),
