@@ -1,10 +1,12 @@
 server <- function(input, output) {
 
     package_stats = reactive({
-        all_packages[package == input$package, .(package, date = date,
-                                                 downloads = Nb_of_downloads, distinctIPs = Nb_of_distinct_IPs)][
-                                                     date >= input$date[1] & date <= input$date[2]
-                                                     ]
+        all_packages[package == input$package,
+                     .(package, date,
+                       downloads = Nb_of_downloads,
+                       distinctIPs = Nb_of_distinct_IPs)][
+                           date >= input$date[1] & date <= input$date[2]
+                           ]
     })
 
     output$raw_downloads = DT::renderDT({
@@ -57,4 +59,19 @@ server <- function(input, output) {
         }
         plot
     })
+
+    output$totals = DT::renderDT({
+        output_df = all_packages
+        output_df$IsMSstats = ifelse(!(output_df$package %in% c("Cardinal", "matter")),
+                                 "MSstats ecosystem", "Cardinal + matter")
+        output_df = output_df[Nb_of_downloads > 0 & date >= input$date[1] & date <= input$date[2],
+                       .(TotalDownloads = sum(Nb_of_downloads, na.rm = TRUE),
+                         TotalDistinct = sum(Nb_of_distinct_IPs, na.rm = TRUE)),
+                       by = "IsMSstats"]
+        output_df = rbind(output_df, data.table(IsMSstats = "MSstats Skyline external (all time)",
+                                          TotalDownloads = external_downloads,
+                                          TotalDistinct = NA))
+        colnames(output_df) = c("Packages", colnames(output_df)[2:3])
+        output_df
+    }, options = list(dom = "t"))
 }

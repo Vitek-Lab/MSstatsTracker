@@ -7,6 +7,14 @@ library(ggthemes)
 library(ggplot2)
 library(bioC.logs)
 library(readr)
+library(stringr)
+library(xml2)
+library(rvest)
+
+test = xml2::read_html("https://skyline.ms/skyts/home/software/Skyline/tools/details.view?name=MSstats")
+test_body = rvest::html_node(test, "body")
+external_downloads = as.numeric(stringr::str_match(xml2::xml_text(test_body), "Downloaded: ([0-9]+)")[, 2])
+
 
 pkgs = c("MSstats", "MSstatsTMT", "MSstatsConvert",
          "MSstatsPTM", "MSstatsTMTPTM", "MSstatsQC",
