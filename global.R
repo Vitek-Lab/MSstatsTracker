@@ -18,7 +18,7 @@ external_downloads = as.numeric(stringr::str_match(xml2::xml_text(test_body), "D
 
 pkgs = c("MSstats", "MSstatsTMT", "MSstatsConvert",
          "MSstatsPTM", "MSstatsTMTPTM", "MSstatsQC",
-         "MSstatsSampleSize", "Cardinal", "matter")
+         "MSstatsSampleSize", "Cardinal", "matter", "MSstatsShiny")
 all_packages = bioC.logs::bioC_downloads(pkgs)
 all_packages = rbindlist(lapply(1:length(pkgs),
                          function(x) {
